@@ -57,41 +57,40 @@ Now you are able to translate values for the attributes :title and :description 
 
 You may assign attributes through auto generated methods (this methods depend from I18n.available_locales):
 
-I18n.available_locales #=> [:en. :lv]
+  I18n.available_locales #=> [:en. :lv]
 
-post.title_en = 'Multilang rocks!'
-post.title_lv = 'Multilang rulle!'
+  post.title_en = 'Multilang rocks!'
+  post.title_lv = 'Multilang rulle!'
 
-post.title_en #=>  'Multilang rocks!'
-post.title_lv #=>  'Multilang rulle!'
+  post.title_en #=>  'Multilang rocks!'
+  post.title_lv #=>  'Multilang rulle!'
 
 You may use mass assignment on model creation (if :accessible param is defined):
 
-Post.new(:title => {:en => 'Multilang rocks!', :lv => 'Multilang rulle!'})
+  Post.new(:title => {:en => 'Multilang rocks!', :lv => 'Multilang rulle!'})
 
 or
 
-Post.new(:title_en => 'Multilang rocks!', :title_lv => 'Multilang rulle!')
+  Post.new(:title_en => 'Multilang rocks!', :title_lv => 'Multilang rulle!')
 
 Also, you may ise same hashes with setters:
 
-post.title = {:en => 'Multilang rocks!', :lv => 'Multilang rulle!'} 
+  post.title = {:en => 'Multilang rocks!', :lv => 'Multilang rulle!'} 
 
 == Attribute methods
 
 You may get other translations via attribute translation method:
 
-post.title.translation[:lv] #=> 'Multilang rocks!'
-post.title.translation[:en] #=> 'Multilang rulle!'
-
-post.title.translation.locales #=> [:en, :lv]
+  post.title.translation[:lv] #=> 'Multilang rocks!'
+  post.title.translation[:en] #=> 'Multilang rulle!'
+  post.title.translation.locales #=> [:en, :lv]
 
 == Validations
 Multilang has some validation features:
 
-multilang :title, :length => 100  #define maximal length validator
-multilang :title, :required => true #define requirement validator 
-multilang :title, :format => /regexp/ #define validates_format_of validator
+  multilang :title, :length => 100  #define maximal length validator
+  multilang :title, :required => true #define requirement validator 
+  multilang :title, :format => /regexp/ #define validates_format_of validator
 
 == Sphinx
 Multilang attributes are friendly to search engines like sphinx. Attibute stored as YAML UTF-8 text.
