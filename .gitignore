@@ -1,0 +1,15 @@
+*~
+*#
+.#*
+.DS_Store
+nbproject/*
+.idea/*
+*.erb~
+*.rb~
+*.yml~
+*.html~
+rdoc/*
+
+
+
+

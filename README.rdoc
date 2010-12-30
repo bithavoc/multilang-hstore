@@ -1,0 +1,107 @@
+== Multilang
+
+Multilang is a small translation library for translating database values for Rails 3.
+
+Multilang does not create additional translation models. Multilang wants to leave out as much magic as possible.
+
+== Installation
+
+You need configure the multilang gem inside your gemfile:
+
+  gem 'multilang'
+
+Do not forget to run
+
+  bundle install
+
+
+== Basic Usage
+
+This is a walkthrough with all steps you need to setup multilang translated attributes, including model and migration.
+
+We're assuming here you want a Post model with some multilang attributes, as outlined below:
+
+  class Post < ActiveRecord::Base
+    multilang :title, :accessible => true
+  end
+
+or
+
+  class Post < ActiveRecord::Base
+    multilang :title, :description, :required => true, :limit => 100, :accessible => true
+  end
+
+The multilang translations are stored in the same model attributes (eg. title):
+
+You may need to create migration for Post as usual, but multilang attributes should be in text type (or string for realy short fields and low count of application locales (I18n.available_locales)):
+  
+  create_table(:posts) do |t|
+    t.text :title
+    t.timestamps
+  end
+
+Thats it!
+
+Now you are able to translate values for the attributes :title and :description per locale:
+
+  I18n.locale = :en
+  post.title = 'Multilang rocks!'
+  I18n.locale = :lv
+  post.title = 'Multilang rulle!'
+
+  I18n.locale = :en
+  post.title #=> Multilang rocks!
+  I18n.locale = :lv
+  post.title #=> Multilang rulle!
+
+
+You may assign attributes through auto generated methods (this methods depend from I18n.available_locales):
+
+I18n.available_locales #=> [:en. :lv]
+
+post.title_en = 'Multilang rocks!'
+post.title_lv = 'Multilang rulle!'
+
+post.title_en #=>  'Multilang rocks!'
+post.title_lv #=>  'Multilang rulle!'
+
+You may use mass assignment on model creation (if :accessible param is defined):
+
+Post.new(:title => {:en => 'Multilang rocks!', :lv => 'Multilang rulle!'})
+
+or
+
+Post.new(:title_en => 'Multilang rocks!', :title_lv => 'Multilang rulle!')
+
+Also, you may ise same hashes with setters:
+
+post.title = {:en => 'Multilang rocks!', :lv => 'Multilang rulle!'} 
+
+== Attribute methods
+
+You may get other translations via attribute translation method:
+
+post.title.translation[:lv] #=> 'Multilang rocks!'
+post.title.translation[:en] #=> 'Multilang rulle!'
+
+post.title.translation.locales #=> [:en, :lv]
+
+== Validations
+Multilang has some validation features:
+
+multilang :title, :length => 100  #define maximal length validator
+multilang :title, :required => true #define requirement validator 
+multilang :title, :format => /regexp/ #define validates_format_of validator
+
+== Sphinx
+Multilang attributes are friendly to search engines like sphinx. Attibute stored as YAML UTF-8 text.
+
+== Bugs and Feedback
+
+If you discover any bugs or want to drop a line, feel free to create an issue on
+GitHub:
+
+http://github.com/artworklv/multilang/issues
+
+
+Copyright (c) 2010 Arthur Meinart, released under the MIT license
