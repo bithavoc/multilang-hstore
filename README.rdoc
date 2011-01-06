@@ -28,7 +28,7 @@ We're assuming here you want a Post model with some multilang attributes, as out
 or
 
   class Post < ActiveRecord::Base
-    multilang :title, :description, :required => true, :limit => 100, :accessible => true
+    multilang :title, :description, :required => true, :length => 100, :accessible => true
   end
 
 The multilang translations are stored in the same model attributes (eg. title):
