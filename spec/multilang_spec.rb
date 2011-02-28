@@ -237,6 +237,27 @@ describe Multilang do
     rp.title.to_s.should be_an_instance_of(String)
   end
 
+  it "should set/get some attributes in/from PartialrPost" do
+    rp = RegularPost.new
+
+    # set
+    rp.title = "Latviešu nosaukums"
+    rp.body = "Latviešu apraksts"
+    
+    # test
+    I18n.locale = :lv
+    rp.title.should == "Latviešu nosaukums"
+    rp.body.should == "Latviešu apraksts"
+    
+    I18n.locale = :ru
+    rp.title.should == ""
+    rp.body.should == ""
+
+    rp.title.any.should == "Latviešu nosaukums"
+    rp.body.any.should == "Latviešu apraksts"
+    
+  end
+
   # it "should be fast. Maybe. :)" do
 
   #   t0 = Time.now.to_f

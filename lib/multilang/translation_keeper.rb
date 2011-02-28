@@ -17,6 +17,20 @@ module Multilang
       read(locale)
     end
 
+    def current_or_any_value
+      v = value
+      if v.empty?
+        reduced_locales = locales - [actual_locale]
+        reduced_locales.each do |locale|
+          v = value(locale)
+          return v unless v.empty?
+        end
+      else
+        return v
+      end
+      return ''
+    end
+
     def to_s
       raw_read(actual_locale)  
     end

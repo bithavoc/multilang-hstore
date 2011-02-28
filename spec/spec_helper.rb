@@ -49,3 +49,10 @@ class ProtectedPost < ActiveRecord::Base
   multilang :body,  :accessible => false
   attr_accessible :void
 end
+
+class PartialPost < ActiveRecord::Base
+  set_table_name 'abstract_posts'
+  multilang :title
+  multilang :body
+  attr_accessible :void
+end

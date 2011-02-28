@@ -85,6 +85,14 @@ You may get other translations via attribute translation method:
   post.title.translation[:en] #=> 'Multilang rulle!'
   post.title.translation.locales #=> [:en, :lv]
 
+If you have incomplete translations, you can get translation from other locale:
+
+  post.title = {:en => 'Multilang rocks!', :lv => ''}
+  I18n.locale = :lv
+  post.title.any #=> 'Multilang rocks!'
+
+The value from "any" method returns value for I18n.current_locale or, if value is empty, it searches through all locales. It takes searching order from I18n.available_locales array.
+
 == Validations
 Multilang has some validation features:
 

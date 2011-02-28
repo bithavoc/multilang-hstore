@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{multilang}
-  s.version = "0.1"
+  s.version = "0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Arthur Meinart"]
-  s.date = %q{2010-12-30}
+  s.date = %q{2011-02-28}
   s.description = %q{Model translations}
   s.email = %q{artwork.lv@gmail.com}
   s.extra_rdoc_files = [

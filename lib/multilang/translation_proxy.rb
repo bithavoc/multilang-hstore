@@ -14,5 +14,9 @@ module Multilang
     def to_s
       String.new(self)
     end
+
+    def any
+      @multilang_keeper.current_or_any_value
+    end
   end
 end
