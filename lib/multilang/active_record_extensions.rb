@@ -98,8 +98,8 @@ module Multilang
     end
 
     module InstanceMethods
-      def mass_assignment_authorizer
-        super + self.class.multilang_accessible_translations
+      def mass_assignment_authorizer(role = :default)
+        super(role) + (self.class.multilang_accessible_translations || [])
       end
     end #module InstanceMethods
 
