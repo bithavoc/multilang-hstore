@@ -197,7 +197,7 @@ describe Multilang do
     rp.save
 
     rp = RegularPost.last
-    
+   
     rp.title_lv.should == "Latviešu nosaukums"
     rp.body_lv.should == "Latviešu apraksts"
     rp.title_ru.should == "Русский заголовок"

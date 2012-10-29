@@ -36,6 +36,10 @@ module Multilang
             class_variable_set(:@@multilang_accessible_translations, matr)
           end
 
+          module_eval do
+            serialize "#{attribute}", ActiveRecord::Coders::Hstore
+          end
+
           I18n.available_locales.each do |locale|
 
             define_method "#{attribute}_#{locale}" do

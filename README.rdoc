@@ -1,8 +1,13 @@
-== Multilang
+== Multilang-hstore
 
-Multilang is a small translation library for translating database values for Rails 3.
+Multilang is a small translation library for translating database values for Rails 3 using the [Hstore datatype](http://www.postgresql.org/docs/9.0/static/hstore.html).
 
-Multilang does not create additional translation models. Multilang wants to leave out as much magic as possible.
+This project is a fork of [artworklv/multilang](https://github.com/artworklv/multilang) with some remarkable differences:
+
+* Replaced YAML text fields in favor of Hstore fields.
+* The translation hash is no longer limited to locales in `I18n.available_locales`.
+
+It uses [engageis/activerecord-postgres-hstore](https://github.com/engageis/activerecord-postgres-hstore)
 
 == Installation
 
@@ -33,10 +38,10 @@ or
 
 The multilang translations are stored in the same model attributes (eg. title):
 
-You may need to create migration for Post as usual, but multilang attributes should be in text type (or string for realy short fields and low count of application locales (I18n.available_locales)):
+You may need to create migration for Post as usual, but multilang attributes should be in hstore type:
   
   create_table(:posts) do |t|
-    t.text :title
+    t.hstore :title
     t.timestamps
   end
 
@@ -100,9 +105,6 @@ Multilang has some validation features:
   multilang :title, :required => true #define requirement validator 
   multilang :title, :format => /regexp/ #define validates_format_of validator
 
-== Sphinx
-Multilang attributes are friendly to search engines like sphinx. Attibute stored as YAML UTF-8 text.
-
 == Bugs and Feedback
 
 If you discover any bugs or want to drop a line, feel free to create an issue on
@@ -110,5 +112,7 @@ GitHub:
 
 http://github.com/artworklv/multilang/issues
 
+== License(MIT)
 
-Copyright (c) 2010 Arthur Meinart, released under the MIT license
+Copyright (c) 2010 Arthur Meinart
+Copyright (c) 2012 Firebase.co

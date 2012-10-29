@@ -74,7 +74,7 @@ module Multilang
     end
 
     def write(locale, value)
-      @translations[locale.to_s] = value if I18n.available_locales.include?(locale)
+      @translations[locale.to_s] = value
     end
 
     def read(locale)
@@ -90,12 +90,13 @@ module Multilang
     end
 
     def load!
-      data = @model[@attribute].blank? ? nil : YAML::load(@model[@attribute])
+      data = @model[@attribute]
+      data = data.blank? ? nil : data
       @translations = data.is_a?(Hash) ? data : {}
     end
 
     def flush!
-      @model[@attribute] = @translations.ya2yaml
+      @model[@attribute] = @translations
     end
 
   end

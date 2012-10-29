@@ -1,7 +1,7 @@
 ActiveRecord::Schema.define(:version => 1) do
   create_table :abstract_posts do |t|
-    t.text :title
-    t.text :body
+    t.hstore :title
+    t.hstore :body
     t.integer :void, :default => 1
   end
 
