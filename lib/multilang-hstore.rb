@@ -1,7 +1,7 @@
-require 'multilang/version'
-require 'multilang/translation_proxy'
-require 'multilang/translation_keeper'
-require 'multilang/active_record_extensions'
+require 'multilang-hstore/version'
+require 'multilang-hstore/translation_proxy'
+require 'multilang-hstore/translation_keeper'
+require 'multilang-hstore/active_record_extensions'
 
 module Multilang
 end

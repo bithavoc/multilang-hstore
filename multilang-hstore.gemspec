@@ -14,10 +14,10 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     "lib/multilang-hstore.rb",
-    "lib/multilang/active_record_extensions.rb",
-    "lib/multilang/translation_keeper.rb",
-    "lib/multilang/translation_proxy.rb",
-    "lib/multilang/version.rb"
+    "lib/multilang-hstore/active_record_extensions.rb",
+    "lib/multilang-hstore/translation_keeper.rb",
+    "lib/multilang-hstore/translation_proxy.rb",
+    "lib/multilang-hstore/version.rb"
   ]
   s.homepage = %q{http://github.com/firebaseco/multilang-hstore}
   s.require_paths = ["lib"]
