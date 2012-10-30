@@ -2,9 +2,12 @@ $:.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
 $:.unshift File.expand_path(File.dirname(__FILE__))
 
 require 'rubygems'
-require 'activerecord-postgres-hstore'
 require 'active_support'
-require "active_record"
+require 'active_record'
+require 'activerecord-postgres-hstore/activerecord'
+require 'activerecord-postgres-hstore/coder'
+require 'activerecord-postgres-hstore/hash'
+require 'activerecord-postgres-hstore/string'
 require 'multilang-hstore'
 require 'logger'
 
