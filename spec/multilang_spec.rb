@@ -204,7 +204,7 @@ describe Multilang do
     rp.body_ru.should == "Русский текст"
   end
 
-  it "should save attributes in db as search friendly values" do
+  it "should save attributes in db as indexable values" do
     rp = RegularPost.new( :title_lv => "Latviešu nosaukums",
                           :title_ru => "Русский заголовок",
                           :body_lv => "Latviešu apraksts",
@@ -214,10 +214,8 @@ describe Multilang do
 
     rp = RegularPost.last
 
-    rp.title_before_type_cast.should =~ /Latviešu nosaukums/
-    rp.title_before_type_cast.should =~ /Русский заголовок/
-    rp.body_before_type_cast.mb_chars.should =~ /Latviešu apraksts/
-    rp.body_before_type_cast.mb_chars.should =~ /Русский текст/
+    rp.title_before_type_cast.should == {"lv"=>"Latviešu nosaukums", "ru"=>"Русский заголовок"}
+    rp.body_before_type_cast.should == {"lv"=>"Latviešu apraksts", "ru"=>"Русский текст"}
   end
 
   it "should return proxied attribute" do
@@ -257,30 +255,4 @@ describe Multilang do
     rp.body.any.should == "Latviešu apraksts"
     
   end
-
-  # it "should be fast. Maybe. :)" do
-
-  #   t0 = Time.now.to_f
-  #   1000.times do 
-  #     ap = AbstractPost.new( :title => "Latviešu nosaukums | Русский заголовок",
-  #                            :body => "Latviešu apraksts | Русский текст" )
-  #     ap.save
-  #   end
-  #   t1 = Time.now.to_f
-  #   1000.times do
-  #     rp = MinimalPost.new( :title_lv => "Latviešu nosaukums",
-  #                           :title_ru => "Русский заголовок",
-  #                           :body_lv => "Latviešu apraksts",
-  #                           :body_ru => "Русский текст" )
-  #     rp.save
-  #   end
-  #   t2 = Time.now.to_f
-
-  #   puts "\nTiming:"
-  #   puts "AbstractPost without multilang: #{t1 - t0} s."
-  #   puts "MinimalPost with multilang: #{t2 - t1} s."
-
-  #   ((t2-t1) / (t1-t0)).should_not be > 4.0
-  # end
-
 end
