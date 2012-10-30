@@ -13,7 +13,7 @@ It uses [engageis/activerecord-postgres-hstore](https://github.com/engageis/acti
 
 You need configure the multilang gem inside your gemfile:
 
-  gem 'multilang'
+  gem 'multilang-hstore'
 
 Do not forget to run
 
