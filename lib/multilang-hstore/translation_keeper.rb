@@ -13,22 +13,11 @@ module Multilang
     end
 
     def value(locale = nil)
-      locale ||= actual_locale
-      read(locale)
+      @translations.value(locale)
     end
 
     def current_or_any_value
-      v = value
-      if v.empty?
-        reduced_locales = locales - [actual_locale]
-        reduced_locales.each do |locale|
-          v = value(locale)
-          return v unless v.empty?
-        end
-      else
-        return v
-      end
-      return ''
+      @translations.current_or_any_value
     end
 
     def to_s
@@ -60,7 +49,7 @@ module Multilang
     end
 
     def locales
-      @translations.keys.map(&:to_sym)
+      @translations.locales
     end
 
     def empty?
@@ -70,7 +59,7 @@ module Multilang
     private
 
     def actual_locale
-      I18n.locale
+      @translations.actual_locale
     end
 
     def write(locale, value)
@@ -78,7 +67,7 @@ module Multilang
     end
 
     def read(locale)
-      MultilangTranslationProxy.new(self, locale)
+      @translations.read(locale)
     end
 
     def raw_read(locale)
@@ -93,6 +82,45 @@ module Multilang
       data = @model[@attribute]
       data = data.blank? ? nil : data
       @translations = data.is_a?(Hash) ? data : {}
+
+      class << translations
+        attr_accessor :multilang_keeper
+        def to_s
+          "#{current_or_any_value}"
+        end
+
+        def locales
+          self.keys.map(&:to_sym)
+        end
+
+        def read(locale)
+          MultilangTranslationProxy.new(self.multilang_keeper, locale)
+        end
+
+        def current_or_any_value
+          v = value
+          if v.empty?
+            reduced_locales = locales - [actual_locale]
+            reduced_locales.each do |locale|
+              v = value(locale)
+              return v unless v.empty?
+            end
+          else
+            return v
+          end
+          return ''
+        end
+
+        def value(locale = nil)
+          locale ||= actual_locale
+          read(locale)
+        end
+
+        def actual_locale
+          I18n.locale
+        end
+      end
+      @translations.public_send("multilang_keeper=", self)
     end
 
     def flush!

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-$KCODE = "U"
 
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
@@ -255,4 +254,30 @@ describe Multilang do
     rp.body.any.should == "Latviešu apraksts"
     
   end
+
+  it "should set/get attributes directly from HStore underlying type returned by before_type_cast" do
+    rp = RegularPost.new
+
+    # set
+    I18n.locale = :es
+    rp.title = "Hola"
+    rp.body = "Hola Mundo"
+
+    I18n.locale = :en
+    rp.title = "Hello"
+    rp.body = "Hello World"
+    
+    I18n.locale = :ru
+    # test
+    rp.title_before_type_cast.actual_locale.should be :ru
+    rp.title_before_type_cast.locales.should have(2).items
+    rp.title_before_type_cast.locales.should match_array [:es, :en]
+    rp.title_before_type_cast.should be_kind_of Hash
+    I18n.locale = :es
+    rp.title_before_type_cast.value("en").should eq("Hello")
+    rp.title_before_type_cast.value("es").should eq("Hola")
+    rp.title_before_type_cast.value.should eq("Hola")
+    
+  end
+
 end

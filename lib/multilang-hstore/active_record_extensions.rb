@@ -30,6 +30,10 @@ module Multilang
             multilang_translation_keeper(attribute).update(value)
           end
 
+          define_method "#{attribute}_before_type_cast" do
+            multilang_translation_keeper(attribute).translations
+          end
+
           #attribute accessibility for mass assignment
           if options[:accessible]
             matr = multilang_accessible_translations + [attribute.to_sym]
