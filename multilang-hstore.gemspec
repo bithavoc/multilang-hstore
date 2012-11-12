@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Arthur Meinart", "Firebase.co"]
-  s.date = %q{2012-10-29}
+  s.date = %q{2012-11-12}
   s.description = %q{Model translations for Rails 3 backed by PostgreSQL and Hstore}
   s.email = %q{hello@firebase.co}
   s.extra_rdoc_files = [
