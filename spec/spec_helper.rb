@@ -6,8 +6,6 @@ require 'active_support'
 require 'active_record'
 require 'activerecord-postgres-hstore/activerecord'
 require 'activerecord-postgres-hstore/coder'
-require 'activerecord-postgres-hstore/hash'
-require 'activerecord-postgres-hstore/string'
 require 'multilang-hstore'
 require 'logger'
 
