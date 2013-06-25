@@ -7,12 +7,9 @@ Gem::Specification.new do |s|
   s.version = Multilang::VERSION
 
   s.authors = ["Arthur Meinart", "Heapsource"]
-  s.date = %q{2013-25-07}
+  s.date = %q{2013-07-25}
   s.description = %q{Model translations for Rails 3 backed by PostgreSQL and Hstore}
   s.email = %q{hello@heapsource.com}
-  s.extra_rdoc_files = [
-    "README.rdoc"
-  ]
   s.files = [
     "lib/multilang-hstore.rb",
     "lib/multilang-hstore/active_record_extensions.rb",
