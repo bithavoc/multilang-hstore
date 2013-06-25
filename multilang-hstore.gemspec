@@ -6,10 +6,10 @@ Gem::Specification.new do |s|
   s.name = %q{multilang-hstore}
   s.version = Multilang::VERSION
 
-  s.authors = ["Arthur Meinart", "Firebase.co"]
-  s.date = %q{2012-11-12}
+  s.authors = ["Arthur Meinart", "Heapsource"]
+  s.date = %q{2013-25-07}
   s.description = %q{Model translations for Rails 3 backed by PostgreSQL and Hstore}
-  s.email = %q{hello@firebase.co}
+  s.email = %q{hello@heapsource.com}
   s.extra_rdoc_files = [
     "README.rdoc"
   ]
@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
     "lib/multilang-hstore/translation_proxy.rb",
     "lib/multilang-hstore/version.rb"
   ]
-  s.homepage = %q{http://github.com/firebaseco/multilang-hstore}
+  s.homepage = %q{http://github.com/heapsource/multilang-hstore}
   s.require_paths = ["lib"]
   s.summary = %q{Model translations for Rails 3 backed by PostgreSQL and Hstore}
   s.test_files = [

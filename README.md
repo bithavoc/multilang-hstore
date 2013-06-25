@@ -1,4 +1,4 @@
-== Multilang-hstore
+# Multilang-hstore
 
 Multilang is a small translation library for translating database values for Rails 3 using the [Hstore datatype](http://www.postgresql.org/docs/9.0/static/hstore.html).
 
@@ -9,126 +9,126 @@ This project is a fork of [artworklv/multilang](https://github.com/artworklv/mul
 
 It uses [engageis/activerecord-postgres-hstore](https://github.com/engageis/activerecord-postgres-hstore)
 
-== Installation
+## Installation
 
 You need configure the multilang gem inside your gemfile:
 
-  gem 'multilang-hstore'
+    gem 'multilang-hstore'
 
 Do not forget to run
 
-  bundle install
+    bundle install
 
-
-== Basic Usage
+## Basic Usage
 
 This is a walkthrough with all steps you need to setup multilang translated attributes, including model and migration.
 
 We're assuming here you want a Post model with some multilang attributes, as outlined below:
 
-  class Post < ActiveRecord::Base
-    multilang :title, :accessible => true
-  end
+    class Post < ActiveRecord::Base
+      multilang :title, :accessible => true
+    end
 
 or
 
-  class Post < ActiveRecord::Base
-    multilang :title, :description, :required => true, :length => 100, :accessible => true
-  end
+    class Post < ActiveRecord::Base
+      multilang :title, :description, :required => true, :length => 100, :accessible => true
+    end
 
 The multilang translations are stored in the same model attributes (eg. title):
 
 You may need to create migration for Post as usual, but multilang attributes should be in hstore type:
   
-  create_table(:posts) do |t|
-    t.hstore :title
-    t.timestamps
-  end
+    create_table(:posts) do |t|
+      t.hstore :title
+      t.timestamps
+    end
 
 Thats it!
 
 Now you are able to translate values for the attributes :title and :description per locale:
 
-  I18n.locale = :en
-  post.title = 'Multilang rocks!'
-  I18n.locale = :lv
-  post.title = 'Multilang rulle!'
+    I18n.locale = :en
+    post.title = 'Multilang rocks!'
+    I18n.locale = :lv
+    post.title = 'Multilang rulle!'
 
-  I18n.locale = :en
-  post.title #=> Multilang rocks!
-  I18n.locale = :lv
-  post.title #=> Multilang rulle!
+    I18n.locale = :en
+    post.title #=> Multilang rocks!
+    I18n.locale = :lv
+    post.title #=> Multilang rulle!
 
 
 You may assign attributes through auto generated methods (this methods depend from I18n.available_locales):
 
-  I18n.available_locales #=> [:en. :lv]
+    I18n.available_locales #=> [:en. :lv]
 
-  post.title_en = 'Multilang rocks!'
-  post.title_lv = 'Multilang rulle!'
+    post.title_en = 'Multilang rocks!'
+    post.title_lv = 'Multilang rulle!'
 
-  post.title_en #=>  'Multilang rocks!'
-  post.title_lv #=>  'Multilang rulle!'
+    post.title_en #=>  'Multilang rocks!'
+    post.title_lv #=>  'Multilang rulle!'
 
 You may use mass assignment on model creation (if :accessible param is defined):
 
-  Post.new(:title => {:en => 'Multilang rocks!', :lv => 'Multilang rulle!'})
+    Post.new(:title => {:en => 'Multilang rocks!', :lv => 'Multilang rulle!'})
 
 or
 
-  Post.new(:title_en => 'Multilang rocks!', :title_lv => 'Multilang rulle!')
+    Post.new(:title_en => 'Multilang rocks!', :title_lv => 'Multilang rulle!')
 
 Also, you may ise same hashes with setters:
 
-  post.title = {:en => 'Multilang rocks!', :lv => 'Multilang rulle!'} 
+    post.title = {:en => 'Multilang rocks!', :lv => 'Multilang rulle!'} 
 
-== Attribute methods
+## Attribute methods
 
 You may get other translations via attribute translation method:
 
-  post.title.translation[:lv] #=> 'Multilang rocks!'
-  post.title.translation[:en] #=> 'Multilang rulle!'
+    post.title.translation[:lv] #=> 'Multilang rocks!'
+    post.title.translation[:en] #=> 'Multilang rulle!'
   post.title.translation.locales #=> [:en, :lv]
 
 If you have incomplete translations, you can get translation from other locale:
 
-  post.title = {:en => 'Multilang rocks!', :lv => ''}
-  I18n.locale = :lv
-  post.title.any #=> 'Multilang rocks!'
+    post.title = {:en => 'Multilang rocks!', :lv => ''}
+    I18n.locale = :lv
+    post.title.any #=> 'Multilang rocks!'
 
 The value from "any" method returns value for I18n.current_locale or, if value is empty, it searches through all locales. It takes searching order from I18n.available_locales array.
 
-== Validations
+## Validations
 Multilang has some validation features:
 
-  multilang :title, :length => 100  #define maximal length validator
-  multilang :title, :required => true #define requirement validator 
-  multilang :title, :format => /regexp/ #define validates_format_of validator
+    multilang :title, :length => 100  #define maximal length validator
+    multilang :title, :required => true #define requirement validator 
+    multilang :title, :format => /regexp/ #define validates_format_of validator
 
-== Tests
+## Tests
 
 Test runs using a temporary database in your local PostgreSQL server:
 
 Create a test database:
 
-  $ createdb multilang-hstore-test
+    $ createdb multilang-hstore-test
 
 Create the [hstore extension](http://www.postgresql.org/docs/9.1/static/sql-createextension.html):
-  psql -d multilang-hstore-test -c "CREATE EXTENSION IF NOT EXISTS hstore"
+
+    psql -d multilang-hstore-test -c "CREATE EXTENSION IF NOT EXISTS hstore"
 
 Create the role *postgres* if necessary:
 
-  $ createuser -s -r postgres 
+    $ createuser -s -r postgres 
 
 Finally, you can run your tests:
   
-  rspec
+    rspec
 
-== Bugs and Feedback
+## Bugs and Feedback
 
-Use [http://github.com/artworklv/multilang/issues](http://github.com/artworklv/multilang/issues)
+Use [http://github.com/heapsource/multilang-hstore/issues](http://github.com/heapsource/multilang-hstore/issues)
 
-== License(MIT)
+## License(MIT)
 
-Copyright (c) 2010 Arthur Meinart
-Copyright (c) 2012 Firebase.co
+* Copyright (c) 2012-2013 Heapsource.com
+* Copyright (c) 2010 Arthur Meinart
