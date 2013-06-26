@@ -26,6 +26,6 @@ Gem::Specification.new do |s|
     "spec/spec_helper.rb"
   ]
   s.add_dependency 'pg', '>= 0.0.1'
-  s.add_dependency 'activerecord-postgres-hstore', '>= 0.7.5'
+  s.add_dependency 'activerecord', '>= 4.0.0'
 end
 

@@ -1,11 +1,11 @@
 module Multilang
   module ActiveRecordExtensions
 
-    module ClassMethods
+    def self.raise_mass_asignment_deprecation_error!
+      raise Multilang::Exceptions::DeprecationError.new(":accessible was deprecated starting multilang-hstore >= 1.0.0 which is intended for Rails >= 4.0.0. Check more info about the deprecation of mass-asignment in Rails 4")
+    end
 
-      def multilang_accessible_translations
-        class_variable_get(:@@multilang_accessible_translations)
-      end
+    module ClassMethods
 
       def multilang(*args)
 
@@ -18,7 +18,7 @@ module Multilang
 
         options.assert_valid_keys([:required, :length, :accessible, :format, :nil])
 
-        define_translation_base! unless included_modules.include?(InstanceMethods)
+        define_translation_base!
 
         args.each do |attribute|
 
@@ -36,13 +36,12 @@ module Multilang
 
           #attribute accessibility for mass assignment
           if options[:accessible]
-            matr = multilang_accessible_translations + [attribute.to_sym]
-            class_variable_set(:@@multilang_accessible_translations, matr)
+            Multilang::ActiveRecordExtensions.raise_mass_asignment_deprecation_error!
           end
 
           module_eval do
             serialize "#{attribute}", ActiveRecord::Coders::Hstore
-          end
+          end if defined?(ActiveRecord::Coders::Hstore)
 
           I18n.available_locales.each do |locale|
 
@@ -56,8 +55,7 @@ module Multilang
 
             # locale based attribute accessibility for mass assignment
             if options[:accessible]
-              matr = multilang_accessible_translations + ["#{attribute}_#{locale}".to_sym]
-              class_variable_set(:@@multilang_accessible_translations, matr)
+              Multilang::ActiveRecordExtensions.raise_mass_asignment_deprecation_error!
             end
 
             # attribute presence validator
@@ -88,28 +86,17 @@ module Multilang
       private
 
       def define_translation_base!
-        include InstanceMethods
 
         define_method "multilang_translation_keeper" do |attribute|
           unless instance_variable_defined?("@multilang_attribute_#{attribute}")
             instance_variable_set("@multilang_attribute_#{attribute}", MultilangTranslationKeeper.new(self, attribute))
           end
           instance_variable_get "@multilang_attribute_#{attribute}"
-        end
-
-        unless class_variable_defined?(:@@multilang_accessible_translations)
-          class_variable_set(:@@multilang_accessible_translations, [])
-        end
+        end unless method_defined? :multilang_translation_keeper
 
       end
 
     end
-
-    module InstanceMethods
-      def mass_assignment_authorizer(role = :default)
-        super(role) + (self.class.multilang_accessible_translations || [])
-      end
-    end #module InstanceMethods
 
   end #module ActiveRecordExtensions
 end ##module Multilang

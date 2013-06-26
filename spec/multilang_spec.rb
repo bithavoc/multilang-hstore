@@ -139,52 +139,24 @@ describe Multilang do
     rp.body_ru.should == "Русский текст"
   end
 
-  it "should not mass assign attributes in ProtectedPost" do
-    rp = ProtectedPost.new( :title_lv => "Latviešu nosaukums",
-                            :title_ru => "Русский заголовок",
-                            :body_lv => "Latviešu apraksts",
-                            :body_ru => "Русский текст" )
-    
-    # test
-    rp.title_lv.should_not == "Latviešu nosaukums"
-    rp.body_lv.should_not == "Latviešu apraksts"
-    rp.title_ru.should_not == "Русский заголовок"
-    rp.body_ru.should_not == "Русский текст"
+  it "should raise an exception if the deprecated option :accessible is passed as true" do
+    expect {
+      class ProtectedPost < ActiveRecord::Base
+        self.table_name = 'protected_posts'
+        multilang :title, :accessible => true
+        multilang :body,  :accessible => true
+      end
+    }.to raise_error(Multilang::Exceptions::DeprecationError)
   end
 
-  
-  it "should mass assign attributes in RegulularPost, v2" do
-    rp = RegularPost.new( { :title => {
-                              :lv => "Latviešu nosaukums",
-                              :ru => "Русский заголовок"
-                            },
-                            :body => {:lv => "Latviešu apraksts",
-                              :ru => "Русский текст"
-                            }
-                          } )
-    
-    # test
-    rp.title_lv.should == "Latviešu nosaukums"
-    rp.body_lv.should == "Latviešu apraksts"
-    rp.title_ru.should == "Русский заголовок"
-    rp.body_ru.should == "Русский текст"
-  end
-
-  it "should not not mass assign attributes in ProtectedPost, v2" do
-    rp = ProtectedPost.new( { :title => {
-                                :lv => "Latviešu nosaukums",
-                                :ru => "Русский заголовок"
-                              },
-                              :body => {:lv => "Latviešu apraksts",
-                                :ru => "Русский текст"
-                              }
-                            } )
-    
-    # test
-    rp.title_lv.should_not == "Latviešu nosaukums"
-    rp.body_lv.should_not == "Latviešu apraksts"
-    rp.title_ru.should_not == "Русский заголовок"
-    rp.body_ru.should_not == "Русский текст"
+  it "should not raise an exception if the deprecated option :accessible is passed as false" do
+    expect {
+      class ProtectedPost < ActiveRecord::Base
+        self.table_name = 'protected_posts'
+        multilang :title, :accessible => false
+        multilang :body,  :accessible => false
+      end
+    }.to_not raise_error(Multilang::Exceptions::DeprecationError)
   end
 
   it "should save/load attributes in RegularPost" do
@@ -278,6 +250,34 @@ describe Multilang do
     rp.title_before_type_cast.value("es").should eq("Hola")
     rp.title_before_type_cast.value.should eq("Hola")
     
+  end
+
+  it "should load the updated translations" do
+    # create
+    post = NamedPost.new
+    post.title = {:en=>"English", :es=>"Spanish"}
+    post.name = "First"
+    post.save!
+
+    # query
+    query_post = NamedPost.where(:name=>"First").first
+    query_post.should_not be_nil
+    I18n.locale = :es
+    query_post.title.should == "Spanish"
+    I18n.locale = :en
+    query_post.title.should == "English"
+   
+    # update
+    query_post.title = {:en=>"English USA", :es=>"Spanish LAT"}
+    query_post.save!
+
+    #reload
+    query_post = NamedPost.where(:name=>"First").first
+    query_post.should_not be_nil
+    I18n.locale = :es
+    query_post.title.should == "Spanish LAT"
+    I18n.locale = :en
+    query_post.title.should == "English USA"
   end
 
 end

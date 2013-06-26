@@ -124,6 +124,7 @@ module Multilang
     end
 
     def flush!
+      @model.send("#{@attribute}_will_change!")
       @model[@attribute] = @translations
     end
 
