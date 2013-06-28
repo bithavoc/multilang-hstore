@@ -1,23 +1,36 @@
 # Multilang-hstore
 
-Multilang is a small translation library for translating database values for Rails 3 using the [Hstore datatype](http://www.postgresql.org/docs/9.0/static/hstore.html).
+Multilang is a small translation library for translating database values for Active Support/Rails 4 using the [Hstore datatype](http://www.postgresql.org/docs/9.0/static/hstore.html).
 
 This project is a fork of [artworklv/multilang](https://github.com/artworklv/multilang) with some remarkable differences:
 
 * Replaced YAML text fields in favor of Hstore fields.
 * The translation hash is no longer limited to locales in `I18n.available_locales`.
-
-It uses [engageis/activerecord-postgres-hstore](https://github.com/engageis/activerecord-postgres-hstore)
+* Support for Rails 3 and Rails 4.
 
 ## Installation
 
-You need configure the multilang gem inside your gemfile:
+### Rails 3
 
-    gem 'multilang-hstore'
+The last version of the gem for the Rails 3 series is [0.4](https://github.com/heapsource/multilang-hstore/tree/v0.4). You need configure the multilang gem inside your gemfile:
 
-Do not forget to run
+    gem 'multilang-hstore', '~> 0.4'
+
+Do not forget to run:
 
     bundle install
+
+### Rails 4
+
+Starting with version `1.0.0`, this gem is intented to be used in Rails 4. If you are migrating an existing project from Rails 3, make sure you read [Migrating to Rails 4](#Migrating-to-Rails-4).
+
+You need configure the multilang gem inside your gemfile:
+
+    gem 'multilang-hstore', '~> 1.0.0'
+
+Do not forget to run:
+
+	bundle install
 
 ## Basic Usage
 
@@ -26,13 +39,13 @@ This is a walkthrough with all steps you need to setup multilang translated attr
 We're assuming here you want a Post model with some multilang attributes, as outlined below:
 
     class Post < ActiveRecord::Base
-      multilang :title, :accessible => true
+      multilang :title
     end
 
 or
 
     class Post < ActiveRecord::Base
-      multilang :title, :description, :required => true, :length => 100, :accessible => true
+      multilang :title, :description, :required => true, :length => 100
     end
 
 The multilang translations are stored in the same model attributes (eg. title):
@@ -69,7 +82,7 @@ You may assign attributes through auto generated methods (this methods depend fr
     post.title_en #=>  'Multilang rocks!'
     post.title_lv #=>  'Multilang rulle!'
 
-You may use mass assignment on model creation (if :accessible param is defined):
+You may use initialization if needed:
 
     Post.new(:title => {:en => 'Multilang rocks!', :lv => 'Multilang rulle!'})
 
@@ -87,7 +100,7 @@ You may get other translations via attribute translation method:
 
     post.title.translation[:lv] #=> 'Multilang rocks!'
     post.title.translation[:en] #=> 'Multilang rulle!'
-  post.title.translation.locales #=> [:en, :lv]
+    post.title.translation.locales #=> [:en, :lv]
 
 If you have incomplete translations, you can get translation from other locale:
 
@@ -98,6 +111,7 @@ If you have incomplete translations, you can get translation from other locale:
 The value from "any" method returns value for I18n.current_locale or, if value is empty, it searches through all locales. It takes searching order from I18n.available_locales array.
 
 ## Validations
+
 Multilang has some validation features:
 
     multilang :title, :length => 100  #define maximal length validator
@@ -122,7 +136,35 @@ Create the role *postgres* if necessary:
 
 Finally, you can run your tests:
   
-    rspec
+    rspec	
+
+## Migrating to Rails 4
+
+Migrating to Rails 4 and multilang-hstore 1.x is a very straightforward process.
+
+### Deprecated Dependencies
+
+Rails 4 has built-in support for `hstore` datatype, so using any dependency to `activerecord-postgres-hstore` must be removed from your Gemfile:
+
+### Mass-Assignment 
+
+Mass-assignment was deprecated in Rails 4, so it was in our gem. You will receive an error similar to this:
+
+    Multilang::Exceptions::DeprecationError: :accessible was deprecated starting multilang-hstore >= 1.0.0 which is intended for Rails >= 4.0.0. Check more info about the deprecation of mass-asignment in Rails 4
+
+This basically means you are trying to use the option `:accessible` which is deprecated. Removing the option will solve the issue:
+
+Before:
+
+	class Post < ActiveRecord::Base
+	  multilang :title, :accessible=>true
+	end
+
+After:
+
+    class Post < ActiveRecord::Base
+      multilang :title
+	end
 
 ## Bugs and Feedback
 
