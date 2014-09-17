@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Multilang-hstore by bithavoc</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Multilang-hstore</h1>
+        <h2>Multilang is a small library for translating database values for Rails 4 and Postgresql hstore</h2>
+        <a href="https://github.com/bithavoc/multilang-hstore" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="multilang-hstore" class="anchor" href="#multilang-hstore"><span class="octicon octicon-link"></span></a>Multilang-hstore</h1>
+
+<p>Multilang is a small translation library for translating database values for Active Support/Rails 4 using the <a href="http://www.postgresql.org/docs/9.0/static/hstore.html">Hstore datatype</a>.</p>
+
+<p>This project is a fork of <a href="https://github.com/artworklv/multilang">artworklv/multilang</a> with some remarkable differences:</p>
+
+<ul>
+<li>Replaced YAML text fields in favor of Hstore fields.</li>
+<li>The translation hash is no longer limited to locales in <code>I18n.available_locales</code>.</li>
+<li>Support for Rails 3 and Rails 4.</li>
+</ul><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<h3>
+<a name="rails-3" class="anchor" href="#rails-3"><span class="octicon octicon-link"></span></a>Rails 3</h3>
+
+<p>The last version of the gem for the Rails 3 series is <a href="https://github.com/bithavoc/multilang-hstore/tree/v0.4">0.4</a>. You need configure the multilang gem inside your gemfile:</p>
+
+<pre><code>gem 'multilang-hstore'
+</code></pre>
+
+<p>Do not forget to run:</p>
+
+<pre><code>bundle install
+</code></pre>
+
+<h3>
+<a name="rails-4" class="anchor" href="#rails-4"><span class="octicon octicon-link"></span></a>Rails 4</h3>
+
+<p>Starting with version <code>1.0.0</code>, this gem is intented to be used in Rails 4. If you are migrating an existing project from Rails 3, make sure you read <a href="#Migrating-to-Rails-4">Migrating to Rails 4</a>.</p>
+
+<p>You need configure the multilang gem inside your gemfile:</p>
+
+<pre><code>gem 'multilang-hstore', '~&gt; 1.0.0'
+</code></pre>
+
+<p>Do not forget to run:</p>
+
+<pre><code>bundle install
+</code></pre>
+
+<h2>
+<a name="basic-usage" class="anchor" href="#basic-usage"><span class="octicon octicon-link"></span></a>Basic Usage</h2>
+
+<p>This is a walkthrough with all steps you need to setup multilang translated attributes, including model and migration.</p>
+
+<p>We're assuming here you want a Post model with some multilang attributes, as outlined below:</p>
+
+<pre><code>class Post &lt; ActiveRecord::Base
+  multilang :title
+end
+</code></pre>
+
+<p>or</p>
+
+<pre><code>class Post &lt; ActiveRecord::Base
+  multilang :title, :description, :required =&gt; true, :length =&gt; 100
+end
+</code></pre>
+
+<p>The multilang translations are stored in the same model attributes (eg. title):</p>
+
+<p>You may need to create migration for Post as usual, but multilang attributes should be in hstore type:</p>
+
+<pre><code>create_table(:posts) do |t|
+  t.hstore :title
+  t.timestamps
+end
+</code></pre>
+
+<p>Thats it!</p>
+
+<p>Now you are able to translate values for the attributes :title and :description per locale:</p>
+
+<pre><code>I18n.locale = :en
+post.title = 'Multilang rocks!'
+I18n.locale = :lv
+post.title = 'Multilang rulle!'
+
+I18n.locale = :en
+post.title #=&gt; Multilang rocks!
+I18n.locale = :lv
+post.title #=&gt; Multilang rulle!
+</code></pre>
+
+<p>You may assign attributes through auto generated methods (this methods depend from I18n.available_locales):</p>
+
+<pre><code>I18n.available_locales #=&gt; [:en. :lv]
+
+post.title_en = 'Multilang rocks!'
+post.title_lv = 'Multilang rulle!'
+
+post.title_en #=&gt;  'Multilang rocks!'
+post.title_lv #=&gt;  'Multilang rulle!'
+</code></pre>
+
+<p>You may use initialization if needed:</p>
+
+<pre><code>Post.new(:title =&gt; {:en =&gt; 'Multilang rocks!', :lv =&gt; 'Multilang rulle!'})
+</code></pre>
+
+<p>or</p>
+
+<pre><code>Post.new(:title_en =&gt; 'Multilang rocks!', :title_lv =&gt; 'Multilang rulle!')
+</code></pre>
+
+<p>Also, you may ise same hashes with setters:</p>
+
+<pre><code>post.title = {:en =&gt; 'Multilang rocks!', :lv =&gt; 'Multilang rulle!'} 
+</code></pre>
+
+<h2>
+<a name="attribute-methods" class="anchor" href="#attribute-methods"><span class="octicon octicon-link"></span></a>Attribute methods</h2>
+
+<p>You may get other translations via attribute translation method:</p>
+
+<pre><code>post.title.translation[:lv] #=&gt; 'Multilang rocks!'
+post.title.translation[:en] #=&gt; 'Multilang rulle!'
+post.title.translation.locales #=&gt; [:en, :lv]
+</code></pre>
+
+<p>If you have incomplete translations, you can get translation from other locale:</p>
+
+<pre><code>post.title = {:en =&gt; 'Multilang rocks!', :lv =&gt; ''}
+I18n.locale = :lv
+post.title.any #=&gt; 'Multilang rocks!'
+</code></pre>
+
+<p>The value from "any" method returns value for I18n.current_locale or, if value is empty, it searches through all locales. It takes searching order from I18n.available_locales array.</p>
+
+<h2>
+<a name="validations" class="anchor" href="#validations"><span class="octicon octicon-link"></span></a>Validations</h2>
+
+<p>Multilang has some validation features:</p>
+
+<pre><code>multilang :title, :length =&gt; 100  #define maximal length validator
+multilang :title, :required =&gt; true #define requirement validator 
+multilang :title, :format =&gt; /regexp/ #define validates_format_of validator
+</code></pre>
+
+<h2>
+<a name="tests" class="anchor" href="#tests"><span class="octicon octicon-link"></span></a>Tests</h2>
+
+<p>Test runs using a temporary database in your local PostgreSQL server:</p>
+
+<p>Create a test database:</p>
+
+<pre><code>$ createdb multilang-hstore-test
+</code></pre>
+
+<p>Create the <a href="http://www.postgresql.org/docs/9.1/static/sql-createextension.html">hstore extension</a>:</p>
+
+<pre><code>psql -d multilang-hstore-test -c "CREATE EXTENSION IF NOT EXISTS hstore"
+</code></pre>
+
+<p>Create the role <em>postgres</em> if necessary:</p>
+
+<pre><code>$ createuser -s -r postgres 
+</code></pre>
+
+<p>Finally, you can run your tests:</p>
+
+<pre><code>rspec   
+</code></pre>
+
+<h2>
+<a name="migrating-to-rails-4" class="anchor" href="#migrating-to-rails-4"><span class="octicon octicon-link"></span></a>Migrating to Rails 4</h2>
+
+<p>Migrating to Rails 4 and multilang-hstore 1.x is a very straightforward process.</p>
+
+<h3>
+<a name="deprecated-dependencies" class="anchor" href="#deprecated-dependencies"><span class="octicon octicon-link"></span></a>Deprecated Dependencies</h3>
+
+<p>Rails 4 has built-in support for <code>hstore</code> datatype, so using any dependency to <code>activerecord-postgres-hstore</code> must be removed from your Gemfile:</p>
+
+<h3>
+<a name="mass-assignment" class="anchor" href="#mass-assignment"><span class="octicon octicon-link"></span></a>Mass-Assignment</h3>
+
+<p>Mass-assignment was deprecated in Rails 4, so it was in our gem. You will receive an error similar to this:</p>
+
+<pre><code>Multilang::Exceptions::DeprecationError: :accessible was deprecated starting multilang-hstore &gt;= 1.0.0 which is intended for Rails &gt;= 4.0.0. Check more info about the deprecation of mass-asignment in Rails 4
+</code></pre>
+
+<p>This basically means you are trying to use the option <code>:accessible</code> which is deprecated. Removing the option will solve the issue:</p>
+
+<p>Before:</p>
+
+<pre><code>class Post &lt; ActiveRecord::Base
+  multilang :title, :accessible=&gt;true
+end
+</code></pre>
+
+<p>After:</p>
+
+<pre><code>class Post &lt; ActiveRecord::Base
+  multilang :title
+end
+</code></pre>
+
+<h2>
+<a name="bugs-and-feedback" class="anchor" href="#bugs-and-feedback"><span class="octicon octicon-link"></span></a>Bugs and Feedback</h2>
+
+<p>Use <a href="http://github.com/bithavoc/multilang-hstore/issues">http://github.com/bithavoc/multilang-hstore/issues</a></p>
+
+<h2>
+<a name="licensemit" class="anchor" href="#licensemit"><span class="octicon octicon-link"></span></a>License(MIT)</h2>
+
+<ul>
+<li>Copyright (c) 2012 - 2014 Bithavoc and Contributors - <a href="http://bithavoc.io">http://bithavoc.io</a>
+</li>
+<li>Copyright (c) 2010 Arthur Meinart</li>
+</ul>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/bithavoc/multilang-hstore/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/bithavoc/multilang-hstore/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/bithavoc/multilang-hstore"></a> is maintained by <a href="https://github.com/bithavoc">bithavoc</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-54890957-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
