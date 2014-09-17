@@ -12,9 +12,9 @@ This project is a fork of [artworklv/multilang](https://github.com/artworklv/mul
 
 ### Rails 3
 
-The last version of the gem for the Rails 3 series is [0.4](https://github.com/heapsource/multilang-hstore/tree/v0.4). You need configure the multilang gem inside your gemfile:
+The last version of the gem for the Rails 3 series is [0.4](https://github.com/bithavoc/multilang-hstore/tree/v0.4). You need configure the multilang gem inside your gemfile:
 
-    gem 'multilang-hstore', '~> 0.4'
+    gem 'multilang-hstore'
 
 Do not forget to run:
 
@@ -168,9 +168,9 @@ After:
 
 ## Bugs and Feedback
 
-Use [http://github.com/heapsource/multilang-hstore/issues](http://github.com/heapsource/multilang-hstore/issues)
+Use [http://github.com/bithavoc/multilang-hstore/issues](http://github.com/bithavoc/multilang-hstore/issues)
 
 ## License(MIT)
 
-* Copyright (c) 2012-2013 Heapsource.com
+* Copyright (c) 2012 - 2014 Bithavoc and Contributors - http://bithavoc.io
 * Copyright (c) 2010 Arthur Meinart

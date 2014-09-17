@@ -8,6 +8,7 @@ nbproject/*
 *.rb~
 *.yml~
 *.html~
+*.gem
 rdoc/*
 
 
