@@ -118,7 +118,6 @@ Multilang has some validation features:
     multilang :title, :required => true #define requirement validator for all available_locales
     multilang :title, :required => 1 #define requirement validator for 1 locale
     multilang :title, :required => [:en, :es] #define requirement validator for specific locales
-    multilang :title, :required => true #define requirement validator for all available_locales
     multilang :title, :format => /regexp/ #define validates_format_of validator
 
 ## Tests
