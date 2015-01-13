@@ -50,3 +50,13 @@ class NamedPost < ActiveRecord::Base
   self.table_name = 'named_posts'
   multilang :title
 end
+
+class TacoPost < ActiveRecord::Base
+  self.table_name = 'named_posts'
+  multilang :title, required: [:lv, :ru]
+end
+
+class SloppyPost < ActiveRecord::Base
+  self.table_name = 'named_posts'
+  multilang :title, required: 1
+end

@@ -43,6 +43,12 @@ module Multilang
             serialize "#{attribute}", ActiveRecord::Coders::Hstore
           end if defined?(ActiveRecord::Coders::Hstore)
 
+          if options[:required].is_a? Numeric
+            module_eval do
+              validates "#{attribute}_before_type_cast", :'multilang/validators/translation_count' => {min: options[:required]}
+            end
+          end
+
           I18n.available_locales.each do |locale|
 
             define_method "#{attribute}_#{locale}" do
@@ -59,7 +65,7 @@ module Multilang
             end
 
             # attribute presence validator
-            if options[:required]
+            if options[:required] == true or locale_required?(options[:required], locale)
               module_eval do
                 validates_presence_of "#{attribute}_#{locale}"
               end
@@ -94,6 +100,10 @@ module Multilang
           instance_variable_get "@multilang_attribute_#{attribute}"
         end unless method_defined? :multilang_translation_keeper
 
+      end
+
+      def locale_required? options_required, locale
+        options_required.is_a? Array and options_required.map(&:to_s).include?(locale.to_s)
       end
 
     end

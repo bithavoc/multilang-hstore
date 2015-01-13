@@ -280,4 +280,43 @@ describe Multilang do
     query_post.title.should == "English USA"
   end
 
+  it "should be valid when required specified translations are present" do
+    post = TacoPost.new
+    post.title = {lv: "Lv", ru: "Ru"}
+    post.valid?
+    post.should be_valid
+
+    I18n.locale = :nl
+    post.title = "Nl"
+    post.valid?
+    post.should be_valid
+  end
+
+  it "should be invalid when required specified translations are not present" do
+    post = TacoPost.new
+    I18n.locale = :es
+    post.title = {lv: "Latvian"}
+    post.valid?
+    post.should have(1).errors
+  end
+
+  it "should be valid when require number validation is met" do
+    post = SloppyPost.new
+    I18n.locale = :es
+    post.title = {en: "English"}
+    post.valid?
+    post.should be_valid
+
+    post.title = "In Spanish"
+    post.valid?
+    post.should be_valid
+  end
+
+  it "should be invalid when require number validation is not met" do
+    post = SloppyPost.new
+    I18n.locale = :es
+    post.valid?
+    post.should have(1).errors
+  end
+
 end
