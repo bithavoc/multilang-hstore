@@ -1,6 +1,8 @@
 # Multilang-hstore
 
-Multilang is a small translation library for translating database values for Active Support/Rails 4 using the [Hstore datatype](http://www.postgresql.org/docs/9.0/static/hstore.html).
+[![Build Status](https://travis-ci.org/bithavoc/multilang-hstore.svg)](https://travis-ci.org/bithavoc/multilang-hstore)
+
+> Multilang is a small translation library for translating database values for Active Support/Rails 4 using the [Hstore datatype](http://www.postgresql.org/docs/9.0/static/hstore.html).
 
 This project is a fork of [artworklv/multilang](https://github.com/artworklv/multilang) with some remarkable differences:
 

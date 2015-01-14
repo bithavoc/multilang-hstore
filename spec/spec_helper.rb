@@ -8,8 +8,16 @@ require 'multilang-hstore'
 require 'logger'
 
 ActiveRecord::Base.logger = Logger.new(nil)
+ActiveRecord::Base.establish_connection(:adapter => "postgresql", :host=>'127.0.0.1', :user=>'postgres')
+begin
+ActiveRecord::Base.connection.execute('CREATE DATABASE "multilang-hstore-test" WITH OWNER postgres;')
+rescue ActiveRecord::StatementInvalid
+  puts "Database already exists"
+end
 ActiveRecord::Base.establish_connection(:adapter => "postgresql", :database => "multilang-hstore-test", :host=>'127.0.0.1', :user=>'postgres')
+ActiveRecord::Base.connection.execute('CREATE EXTENSION IF NOT EXISTS hstore;')
 
+I18n.enforce_available_locales = false
 I18n.available_locales = [:lv, :ru]
 I18n.locale = I18n.default_locale = :lv
 
