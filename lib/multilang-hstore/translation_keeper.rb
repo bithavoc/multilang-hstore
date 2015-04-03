@@ -32,7 +32,9 @@ module Multilang
     def update(value)
       if value.is_a?(Hash)
         clear
-        value.each{|k, v| write(k, v)}
+        value.each { |k, v| write(k, v) }
+      elsif value.is_a?(MultilangTranslationProxy)
+        update(value.translation.translations)
       elsif value.is_a?(String)
         write(actual_locale, value)
       end
