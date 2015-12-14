@@ -20,6 +20,10 @@ module Multilang
       @translations.current_or_any_value
     end
 
+    def current_or_default_value
+      @translations.current_or_default_value
+    end
+
     def to_s
       raw_read(actual_locale)  
     end
@@ -99,6 +103,10 @@ module Multilang
           MultilangTranslationProxy.new(self.multilang_keeper, locale)
         end
 
+        def current_or_default_value
+          value.empty? ? value(default_locale) : value
+        end
+
         def current_or_any_value
           v = value
           if v.empty?
@@ -113,13 +121,16 @@ module Multilang
           return ''
         end
 
-        def value(locale = nil)
-          locale ||= actual_locale
+        def value(locale = actual_locale)
           read(locale)
         end
 
         def actual_locale
           I18n.locale
+        end
+
+        def default_locale
+          I18n.default_locale
         end
       end
       @translations.public_send("multilang_keeper=", self)
