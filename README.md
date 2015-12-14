@@ -110,7 +110,7 @@ If you have incomplete translations, you can get translation from other locale:
     I18n.locale = :lv
     post.title.any #=> 'Multilang rocks!'
 
-The value from "any" method returns value for I18n.current_locale or, if value is empty, it searches through all locales. It takes searching order from I18n.available_locales array.
+The value from "any" method returns value for I18n.current_locale or, if value is empty, return value for I18n.default_locale, if it's empty too it searches through all locales. It takes searching order from I18n.available_locales array. If you don't need ANY value, you can also use current_or_default method like `post.title.current_or_default` (it searches value for current and default locales only).
 
 ## Validations
 
