@@ -47,7 +47,9 @@ We're assuming here you want a Post model with some multilang attributes, as out
 or
 
     class Post < ActiveRecord::Base
-      multilang :title, :description, :required => true, :length => 100
+      multilang :title, :description, 
+        :required => true,
+        :length => { :maximum=>100, :minimum=>2 }
     end
 
 The multilang translations are stored in the same model attributes (eg. title):
@@ -116,7 +118,10 @@ The value from "any" method returns value for I18n.current_locale or, if value i
 
 Multilang has some validation features:
 
-    multilang :title, :length => 100  #define maximal length validator
+    multilang :title, :length => 100  #define maximum length validator
+    multilang :title, :length => {:minimum=> 2,:maximum=>100}  #define min/max length validator
+    multilang :title, :length => {:within=>2..100}  #define min/max length validator
+    multilang :title, :length => {:is=> 10} #length is exactly 10
     multilang :title, :required => true #define requirement validator for all available_locales
     multilang :title, :required => 1 #define requirement validator for 1 locale
     multilang :title, :required => [:en, :es] #define requirement validator for specific locales
