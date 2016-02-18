@@ -122,6 +122,23 @@ Multilang has some validation features:
     multilang :title, :required => [:en, :es] #define requirement validator for specific locales
     multilang :title, :format => /regexp/ #define validates_format_of validator
 
+## Error messages
+
+To get a custom message you will need to use one of this solutions:
+
+1. Use the message in the declaration
+
+    multilang :title, :required => 1, :message => 'Not enough translations'
+
+2. Write a new key in your translations file. Ex:
+
+    [config/locales/yourtranslationsfile.yml]
+    errors:
+      messages:
+        insufficient-translations:
+          one: 'We need at least one tranlation.'
+          other: 'We need at least %{count} tranlations.'
+
 ## Tests
 
 Test runs using a temporary database in your local PostgreSQL server:
