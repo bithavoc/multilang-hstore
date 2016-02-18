@@ -74,7 +74,8 @@ module Multilang
             #attribute maximal length validator
             if options[:length]
               module_eval do
-                validates_length_of "#{attribute}_#{locale}", :maximum => options[:length]
+                validates_length_of "#{attribute}_#{locale}",
+                  ( options[:length].is_a?(Hash) ? options[:length] : {:maximum=>options[:length]} )
               end
             end
 
