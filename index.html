@@ -1,37 +1,41 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <title>Multilang-hstore by bithavoc</title>
 
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <title>Multilang-hstore by bithavoc</title>
   </head>
-
   <body>
-    <header>
-      <div class="inner">
+    <div class="wrapper">
+      <header>
         <h1>Multilang-hstore</h1>
-        <h2>Multilang is a small library for translating database values for Rails 4 and Postgresql hstore</h2>
-        <a href="https://github.com/bithavoc/multilang-hstore" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
+        <p>Multilang is a small library for translating database values for Rails 4 and Postgresql hstore</p>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h1>
-<a name="multilang-hstore" class="anchor" href="#multilang-hstore"><span class="octicon octicon-link"></span></a>Multilang-hstore</h1>
+        <p class="view"><a href="https://github.com/bithavoc/multilang-hstore">View the Project on GitHub <small>bithavoc/multilang-hstore</small></a></p>
 
+
+        <ul>
+          <li><a href="https://github.com/bithavoc/multilang-hstore/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/bithavoc/multilang-hstore/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/bithavoc/multilang-hstore">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="multilang-hstore" class="anchor" href="#multilang-hstore" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Multilang-hstore</h1>
+
+<p><a href="https://travis-ci.org/bithavoc/multilang-hstore"><img src="https://travis-ci.org/bithavoc/multilang-hstore.svg" alt="Build Status"></a></p>
+
+<blockquote>
 <p>Multilang is a small translation library for translating database values for Active Support/Rails 4 using the <a href="http://www.postgresql.org/docs/9.0/static/hstore.html">Hstore datatype</a>.</p>
+</blockquote>
 
 <p>This project is a fork of <a href="https://github.com/artworklv/multilang">artworklv/multilang</a> with some remarkable differences:</p>
 
@@ -39,11 +43,13 @@
 <li>Replaced YAML text fields in favor of Hstore fields.</li>
 <li>The translation hash is no longer limited to locales in <code>I18n.available_locales</code>.</li>
 <li>Support for Rails 3 and Rails 4.</li>
-</ul><h2>
-<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+</ul>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
 
 <h3>
-<a name="rails-3" class="anchor" href="#rails-3"><span class="octicon octicon-link"></span></a>Rails 3</h3>
+<a id="rails-3" class="anchor" href="#rails-3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Rails 3</h3>
 
 <p>The last version of the gem for the Rails 3 series is <a href="https://github.com/bithavoc/multilang-hstore/tree/v0.4">0.4</a>. You need configure the multilang gem inside your gemfile:</p>
 
@@ -56,7 +62,7 @@
 </code></pre>
 
 <h3>
-<a name="rails-4" class="anchor" href="#rails-4"><span class="octicon octicon-link"></span></a>Rails 4</h3>
+<a id="rails-4" class="anchor" href="#rails-4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Rails 4</h3>
 
 <p>Starting with version <code>1.0.0</code>, this gem is intented to be used in Rails 4. If you are migrating an existing project from Rails 3, make sure you read <a href="#Migrating-to-Rails-4">Migrating to Rails 4</a>.</p>
 
@@ -71,7 +77,7 @@
 </code></pre>
 
 <h2>
-<a name="basic-usage" class="anchor" href="#basic-usage"><span class="octicon octicon-link"></span></a>Basic Usage</h2>
+<a id="basic-usage" class="anchor" href="#basic-usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Basic Usage</h2>
 
 <p>This is a walkthrough with all steps you need to setup multilang translated attributes, including model and migration.</p>
 
@@ -141,7 +147,7 @@ post.title_lv #=&gt;  'Multilang rulle!'
 </code></pre>
 
 <h2>
-<a name="attribute-methods" class="anchor" href="#attribute-methods"><span class="octicon octicon-link"></span></a>Attribute methods</h2>
+<a id="attribute-methods" class="anchor" href="#attribute-methods" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Attribute methods</h2>
 
 <p>You may get other translations via attribute translation method:</p>
 
@@ -157,20 +163,22 @@ I18n.locale = :lv
 post.title.any #=&gt; 'Multilang rocks!'
 </code></pre>
 
-<p>The value from "any" method returns value for I18n.current_locale or, if value is empty, it searches through all locales. It takes searching order from I18n.available_locales array.</p>
+<p>The value from "any" method returns value for I18n.current_locale or, if value is empty, return value for I18n.default_locale, if it's empty too it searches through all locales. It takes searching order from I18n.available_locales array. If you don't need ANY value, you can also use current_or_default method like <code>post.title.current_or_default</code> (it searches value for current and default locales only).</p>
 
 <h2>
-<a name="validations" class="anchor" href="#validations"><span class="octicon octicon-link"></span></a>Validations</h2>
+<a id="validations" class="anchor" href="#validations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Validations</h2>
 
 <p>Multilang has some validation features:</p>
 
 <pre><code>multilang :title, :length =&gt; 100  #define maximal length validator
-multilang :title, :required =&gt; true #define requirement validator 
+multilang :title, :required =&gt; true #define requirement validator for all available_locales
+multilang :title, :required =&gt; 1 #define requirement validator for 1 locale
+multilang :title, :required =&gt; [:en, :es] #define requirement validator for specific locales
 multilang :title, :format =&gt; /regexp/ #define validates_format_of validator
 </code></pre>
 
 <h2>
-<a name="tests" class="anchor" href="#tests"><span class="octicon octicon-link"></span></a>Tests</h2>
+<a id="tests" class="anchor" href="#tests" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tests</h2>
 
 <p>Test runs using a temporary database in your local PostgreSQL server:</p>
 
@@ -195,17 +203,17 @@ multilang :title, :format =&gt; /regexp/ #define validates_format_of validator
 </code></pre>
 
 <h2>
-<a name="migrating-to-rails-4" class="anchor" href="#migrating-to-rails-4"><span class="octicon octicon-link"></span></a>Migrating to Rails 4</h2>
+<a id="migrating-to-rails-4" class="anchor" href="#migrating-to-rails-4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Migrating to Rails 4</h2>
 
 <p>Migrating to Rails 4 and multilang-hstore 1.x is a very straightforward process.</p>
 
 <h3>
-<a name="deprecated-dependencies" class="anchor" href="#deprecated-dependencies"><span class="octicon octicon-link"></span></a>Deprecated Dependencies</h3>
+<a id="deprecated-dependencies" class="anchor" href="#deprecated-dependencies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Deprecated Dependencies</h3>
 
 <p>Rails 4 has built-in support for <code>hstore</code> datatype, so using any dependency to <code>activerecord-postgres-hstore</code> must be removed from your Gemfile:</p>
 
 <h3>
-<a name="mass-assignment" class="anchor" href="#mass-assignment"><span class="octicon octicon-link"></span></a>Mass-Assignment</h3>
+<a id="mass-assignment" class="anchor" href="#mass-assignment" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Mass-Assignment</h3>
 
 <p>Mass-assignment was deprecated in Rails 4, so it was in our gem. You will receive an error similar to this:</p>
 
@@ -229,38 +237,26 @@ end
 </code></pre>
 
 <h2>
-<a name="bugs-and-feedback" class="anchor" href="#bugs-and-feedback"><span class="octicon octicon-link"></span></a>Bugs and Feedback</h2>
+<a id="bugs-and-feedback" class="anchor" href="#bugs-and-feedback" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Bugs and Feedback</h2>
 
 <p>Use <a href="http://github.com/bithavoc/multilang-hstore/issues">http://github.com/bithavoc/multilang-hstore/issues</a></p>
 
 <h2>
-<a name="licensemit" class="anchor" href="#licensemit"><span class="octicon octicon-link"></span></a>License(MIT)</h2>
+<a id="licensemit" class="anchor" href="#licensemit" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License(MIT)</h2>
 
 <ul>
 <li>Copyright (c) 2012 - 2014 Bithavoc and Contributors - <a href="http://bithavoc.io">http://bithavoc.io</a>
 </li>
 <li>Copyright (c) 2010 Arthur Meinart</li>
 </ul>
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/bithavoc/multilang-hstore/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/bithavoc/multilang-hstore/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/bithavoc/multilang-hstore"></a> is maintained by <a href="https://github.com/bithavoc">bithavoc</a>.</p>
-
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/bithavoc">bithavoc</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
     </div>
-
-            <script type="text/javascript">
+    <script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
