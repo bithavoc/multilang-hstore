@@ -68,3 +68,8 @@ class SloppyPost < ActiveRecord::Base
   self.table_name = 'named_posts'
   multilang :title, required: 1
 end
+
+class SquishedPost < ActiveRecord::Base
+  self.table_name = 'named_posts'
+  multilang :title, squish: true
+end
