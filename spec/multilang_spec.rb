@@ -319,30 +319,33 @@ describe Multilang do
     expect(post.errors.size).to be >= 1
   end
 
-  it "should squish attributes when option :squish is passed as true" do
-    post = SquishedPost.new
+  it "should sanitize attributes when option :sanitizer is passed" do
+    post = SanitizedPost.new
     I18n.locale = :en
     post.title = " foo   bar    \n   \t   boo"
     post.title.should == "foo bar boo"
+    
+    post.body = "<html><div>foo</div</html> bar"
+    post.body.should == "foo bar"
     
     post.title = {:en=>"English        USA", :es=>"Spanish           LAT"}
     post.title.translation[:en].should == "English USA"
     post.title.translation[:es].should == "Spanish LAT"
   end
   
-  it "should get unsquished attributes as squished when option :squish is passed as true" do
+  it "should get unsanitized attributes as sanitized when option :sanitizer is passed" do
     # Create record with unsquished title
-    post = NamedPost.new
-    post.name = "unsquished_record"
+    post = MinimalPost.new
+    post.name = "unsanitized_record"
     post.title = {en: " foo   bar    \n   \t   boo"}
     post.save!
     
-    # Get title from SquishedPost as squished
-    post = SquishedPost.where(name: 'unsquished_record').first
+    # Get sanitized title from Sanitized
+    post = SanitizedPost.where(name: 'unsanitized_record').first
     post.title.translation[:en].should == "foo bar boo"
     
-    # Get title from NamedPost as unsquished
-    post = NamedPost.where(name: 'unsquished_record').first
+    # Get unsanitized title from MinimalPost
+    post = MinimalPost.where(name: 'unsanitized_record').first
     post.title.translation[:en].should == " foo   bar    \n   \t   boo"
   end
 end

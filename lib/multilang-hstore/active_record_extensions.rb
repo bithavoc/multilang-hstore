@@ -14,25 +14,25 @@ module Multilang
           :length => nil,
           :accessible => false,
           :format => nil,
-          :squish => false
+          :sanitizer => nil
         }.merge(args.extract_options!)
 
-        options.assert_valid_keys([:required, :length, :accessible, :format, :squish, :nil])
+        options.assert_valid_keys([:required, :length, :accessible, :format, :sanitizer, :nil])
        
         define_translation_base!
          
         args.each do |attribute|
 
           define_method attribute do
-            multilang_translation_keeper(attribute, options[:squish]).value
+            multilang_translation_keeper(attribute, options[:sanitizer]).value
           end
 
           define_method "#{attribute}=" do |value|
-            multilang_translation_keeper(attribute, options[:squish]).update(value)
+            multilang_translation_keeper(attribute, options[:sanitizer]).update(value)
           end
 
           define_method "#{attribute}_before_type_cast" do
-            multilang_translation_keeper(attribute, options[:squish]).translations
+            multilang_translation_keeper(attribute, options[:sanitizer]).translations
           end
 
           #attribute accessibility for mass assignment
@@ -53,11 +53,11 @@ module Multilang
           I18n.available_locales.each do |locale|
 
             define_method "#{attribute}_#{locale}" do
-              multilang_translation_keeper(attribute, options[:squish])[locale]
+              multilang_translation_keeper(attribute, options[:sanitizer])[locale]
             end
 
             define_method "#{attribute}_#{locale}=" do |value|
-              multilang_translation_keeper(attribute, options[:squish])[locale] = value
+              multilang_translation_keeper(attribute, options[:sanitizer])[locale] = value
             end
 
             # locale based attribute accessibility for mass assignment
@@ -94,9 +94,9 @@ module Multilang
 
       def define_translation_base!
         
-        define_method "multilang_translation_keeper" do |attribute, squish|
+        define_method "multilang_translation_keeper" do |attribute, sanitizer|
           unless instance_variable_defined?("@multilang_attribute_#{attribute}")
-            instance_variable_set("@multilang_attribute_#{attribute}", MultilangTranslationKeeper.new(self, attribute, squish))
+            instance_variable_set("@multilang_attribute_#{attribute}", MultilangTranslationKeeper.new(self, attribute, sanitizer))
           end
           instance_variable_get "@multilang_attribute_#{attribute}"
         end unless method_defined? :multilang_translation_keeper
