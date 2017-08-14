@@ -20,6 +20,6 @@ Gem::Specification.new do |s|
     "spec/spec_helper.rb"
   ]
   s.add_dependency 'pg', '~> 0.0'
-  s.add_dependency 'activerecord', '~> 4.0'
+  s.add_dependency 'activerecord', '>= 4.0'
 end
 
