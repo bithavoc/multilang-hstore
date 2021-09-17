@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 
-gem 'pg', '>= 0.0.1'
-gem 'activerecord', '>= 4.0.0'
+gem 'pg', '~> 1.2', '>= 1.2.3'
+gem 'activerecord', '>= 6.0.0'
 
 gem 'rake'
 
