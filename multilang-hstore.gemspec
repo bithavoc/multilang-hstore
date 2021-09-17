@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
     "spec/schema.rb",
     "spec/spec_helper.rb"
   ]
-  s.add_dependency 'pg', '~> 0.0'
-  s.add_dependency 'activerecord', '~> 4.0'
+  s.add_dependency 'pg', '~> 1.2', '>= 1.2.3'
+  s.add_dependency 'activerecord', '>= 6.0'
 end
 

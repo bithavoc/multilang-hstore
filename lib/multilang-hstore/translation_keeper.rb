@@ -4,11 +4,13 @@ module Multilang
     attr_reader :model
     attr_reader :attribute
     attr_reader :translations
+    attr_reader :sanitizer
 
-    def initialize(model, attribute)
+    def initialize(model, attribute, sanitizer)
       @model = model
       @attribute = attribute
       @translations = {}
+      @sanitizer = sanitizer
       load!
     end
 
@@ -69,11 +71,11 @@ module Multilang
     end
 
     def write(locale, value)
-      @translations[locale.to_s] = value
+      @translations[locale.to_s] = @sanitizer ? @sanitizer.call(value) : value
     end
 
     def read(locale)
-      @translations.read(locale)
+      @sanitizer ? @sanitizer.call(@translations.read(locale)) : @translations.read(locale)
     end
 
     def raw_read(locale)

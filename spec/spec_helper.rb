@@ -68,3 +68,18 @@ class SloppyPost < ActiveRecord::Base
   self.table_name = 'named_posts'
   multilang :title, required: 1
 end
+
+class SanitizedPost < ActiveRecord::Base
+  self.table_name = 'abstract_posts'
+  
+  def self.squish(value)
+    value.squish!
+  end
+  
+  def self.sanitize_html(value)
+    value.gsub!(/<\/?[^>]*>/, '')
+  end
+      
+  multilang :title, sanitizer: method(:squish)
+  multilang :body,  sanitizer: method(:sanitize_html)
+end
